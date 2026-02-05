@@ -1,0 +1,19 @@
+# .envexample (generated from your .env; secret values redacted)
+# Copy this file to .env and fill in secret values. DO NOT commit secrets.
+
+# LangSmith / tracing
+LANGSMITH_API_KEY=
+LANGSMITH_TRACING_V2=
+LANGSMITH_PROJECT=
+
+# Tavily search API key (required for retrieval)
+TAVILY_API_KEY=
+
+# GROQ / other LLM gateway key
+GROQ_API_KEY=
+
+# Optional endpoints (uncomment and set if needed)
+# LANGCHAIN_ENDPOINT=
+# LANGSMITH_ENDPOINT=
+
+
