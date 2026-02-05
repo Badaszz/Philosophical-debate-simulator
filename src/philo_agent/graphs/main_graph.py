@@ -11,6 +11,7 @@ from philo_agent.schemas.philosopher import (
     PhilosopherSet,
     DebateTurn,
     PhilosophyAgentState,
+    InputState,
 )
 from philo_agent.graphs.create_philosophers import create_philosophers
 from philo_agent.retrieval.retrieve_tavily import retrieval_map
@@ -195,8 +196,8 @@ def should_continue_debate(state: PhilosophyAgentState) -> str:
     return "format"
 
 
-# Build the main debate graph
-graph = StateGraph(PhilosophyAgentState)
+# Build the main debate graph. Expose only `InputState` to external callers.
+graph = StateGraph(InputState)
 
 graph.add_node("philosophers", create_philosophers)
 graph.add_node("retrieve", retrieval_map)

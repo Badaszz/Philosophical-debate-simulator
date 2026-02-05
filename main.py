@@ -17,6 +17,7 @@ from philo_agent.schemas.philosopher import (
     PhilosopherSet,
     DebateTurn,
     PhilosophyAgentState,
+    InputState,
 )
 from philo_agent.graphs.create_philosophers import create_philosophers
 from philo_agent.retrieval.retrieve_tavily import retrieval_map

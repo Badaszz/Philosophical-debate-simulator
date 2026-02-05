@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 
-from philo_agent.schemas.philosopher import PhilosopherSet, PhilosophyAgentState
+from philo_agent.schemas.philosopher import PhilosopherSet, PhilosophyAgentState, InputState
 
 # Load environment
 load_dotenv()
@@ -44,11 +44,11 @@ IMPORTANT: Respond ONLY with a valid JSON object. Do NOT use any tools. The JSON
 """)
 
 
-def create_philosophers(state: PhilosophyAgentState) -> PhilosophyAgentState:
+def create_philosophers(state: InputState) -> PhilosophyAgentState:
     """Create two opposing philosophers for a debate topic.
     
     Args:
-        state: PhilosophyAgentState containing topic
+        state: InputState containing topic
         
     Returns:
         Updated state with philosopher_set and turn_count initialized

@@ -36,3 +36,8 @@ class PhilosophyAgentState(TypedDict, total=False):
     history: list
     final_dialogue: str
     turn_count: int
+    
+    
+class InputState(TypedDict):
+    """Input Schema for the philosophy debate agent."""
+    topic: str

@@ -66,3 +66,33 @@ python main.py
 ---
 Generated and organized from the project notebook and source files.
 
+## Examples
+
+### Absurdism debate (formatted)
+
+Below is an example formatted debate between two philosopher personas (Albert Camus and Thomas Aquinas) on the theme of Absurdism. The example was adapted from `example.txt` for readability.
+
+---
+
+#### Albert Camus
+
+The absurd is not a mere philosophical abstraction but the lived reality of a world that offers no ultimate meaning, yet insists upon our search for it. To begin a debate on absurdism is to acknowledge that the human condition is defined by this tension: the yearning for order against the indifferent universe. Critics of existentialism often claim that it devolves into nihilism or moral relativism, but that is a misreading. Existentialism, and absurdism in particular, does not surrender to despair; it invites us to revolt against the absurd by creating our own values through conscious choice. The opponent’s suggestion to merely "begin" the debate overlooks the fact that the absurd is already present in every act of living. To ignore it is to live in denial, to accept it is to confront the very core of our freedom. Therefore, the debate must start with the recognition that the absurd is not a theoretical construct but a lived fact that demands a response of defiance and authenticity.
+
+> I challenge the opponent’s reasoning by asking: if the absurd is indeed a universal condition, why do some philosophers dismiss it as a mere rhetorical flourish? Their dismissal betrays a failure to confront the very reality that compels us to question the legitimacy of all our institutions and beliefs. The absurd is not a convenient excuse for moral laxity; it is the crucible in which genuine moral courage is forged.
+
+> **Question:** If we accept that the absurd is unavoidable, how can we justify the imposition of external moral codes that claim to provide meaning, without becoming complicit in the very absurdity we seek to transcend?
+
+---
+
+#### Thomas Aquinas
+
+The notion that life is inherently absurd, that existence lacks any objective meaning, is a position that undermines the very foundations of human reason and the natural order. In the Scholastic tradition, we hold that all beings are created by a rational God, and that nature itself is a manifestation of divine wisdom. As I have argued in the Summa Theologiae, the existence of a first cause—God—provides the ultimate grounding for all being. If we deny this, we fall into a vicious circle: we cannot explain why there is a world at all, nor why human beings possess the capacity for rational thought and moral discernment. Absurdism, by asserting that life is devoid of meaning, effectively erases the possibility of objective truth and moral law. It also contradicts the Aristotelian principle of teleology, which holds that every natural thing has a purpose or end (telos). To claim that existence is absurd is to deny that purpose, thereby negating the very possibility of human flourishing (eudaimonia) and the pursuit of virtue.
+
+> Moreover, the method of Scholasticism—deduction from first principles, rigorous logical analysis, and the synthesis of faith and reason—provides a robust framework for addressing existential questions. It does not rely on subjective whims but on the intelligibility of the cosmos as a rational creation. Therefore, absurdism is not only philosophically untenable but also epistemologically dangerous, as it invites moral relativism and existential despair.
+
+> **Question:** If we accept that all beings are created by a rational God, how can we reconcile the existence of suffering and apparent moral evil with the notion of a benevolent, all-powerful creator?
+
+---
+
+*(Full formatted debate appended to `example.txt` in repository.)*
+
