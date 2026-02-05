@@ -1,8 +1,8 @@
 {
-  "python_path": "src",
+  "python_path": ".",
   "dependencies": ["."],
   "graphs": {
-    "agent": "./src/philo_agent/graphs/main_graph.py:philosophy_agent"
+    "agent": "main:app"
   },
   "env": ".env",
   "python_version": "3.13"
