@@ -151,8 +151,15 @@ def debate_turn(state: PhilosophyAgentState) -> PhilosophyAgentState:
                 }
             else:
                 parsed = json.loads(match.group(0))
-        
-        turn = DebateTurn.parse_obj(parsed)
+        try:
+            turn = DebateTurn.model_validate(parsed)
+        except Exception:
+            # If validation fails, create a default turn
+            turn = DebateTurn(
+                speaker=p["philosopher"].name,
+                argument=parsed.get("argument", text[:500]),
+                question=parsed.get("question", "What do you think?")
+            )
         turns.append(turn)
     
     return {**state, "history": history + turns, "turn_count": turn_count + 1}
@@ -223,3 +230,10 @@ graph.add_edge("format", END)
 
 # Compile the graph
 app = graph.compile()
+
+# function to be called by fastapi endpoint
+def run_debate(topic: str):
+    result = app.invoke({
+        "topic": topic
+    })
+    return result["final_dialogue"]
