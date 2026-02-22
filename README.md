@@ -16,6 +16,9 @@ A lightweight framework for generating and running multi-turn philosophical deba
 
 ## Repo Structure
 - `main.py` — Entrypoint that wires imports and lets you run the graph locally.
+- `app.py` — Entrypoint that exposes the agent as a fastapi endpoint.
+- `streamlit_app.py` — Frontend for the project, calls the fastapi backend.
+- - `Dockerfile` — docker file to build the docker image that runs the project.
 - `langgraph.json` — LangGraph dev config.
 - `src/philo_agent/schemas/philosopher.py` — Pydantic models and TypedDict state schema.
 - `src/philo_agent/graphs/create_philosophers.py` — Node that generates philosopher profiles.
