@@ -18,7 +18,7 @@ A lightweight framework for generating and running multi-turn philosophical deba
 - `main.py` — Entrypoint that wires imports and lets you run the graph locally.
 - `app.py` — Entrypoint that exposes the agent as a fastapi endpoint.
 - `streamlit_app.py` — Frontend for the project, calls the fastapi backend.
-- - `Dockerfile` — docker file to build the docker image that runs the project.
+- `Dockerfile` — docker file to build the docker image that runs the project.
 - `langgraph.json` — LangGraph dev config.
 - `src/philo_agent/schemas/philosopher.py` — Pydantic models and TypedDict state schema.
 - `src/philo_agent/graphs/create_philosophers.py` — Node that generates philosopher profiles.
@@ -38,28 +38,39 @@ A lightweight framework for generating and running multi-turn philosophical deba
 
 ```
 TAVILY_API_KEY=your_tavily_api_key
-OPENAI_API_KEY=your_openai_api_key_or_equivalent
+GROQ_API_KEY=your_groq_api_key_or_equivalent
 ```
+## Run Locally
 
-## Run Locally (LangGraph dev)
-1. Activate your virtualenv.
-2. (If necessary) ensure `src` is on the Python path — `main.py` already adds it at runtime.
-3. Start LangGraph dev UI:
+This project uses a FastAPI backend and a Streamlit frontend.  
+You need **two terminals** running simultaneously.
+
+---
+
+### 1. Start the FastAPI Backend
+
+From the project root, run:
 
 ```bash
-langgraph dev
+uv run uvicorn app:app --reload
 ```
+This launches the API that powers the philosophy debate agent.
 
-Or run the script directly to test a single invocation:
+### 2. Start the Streamlit Frontend
+
+Open a new terminal in the same directory and run:
 
 ```bash
-python main.py
+uv run streamlit run streamlit_app.py
 ```
+This starts the web interface where users interact with the simulator.
 
-## Notes & Troubleshooting
-- If you see import errors for `philo_agent`, ensure `python_path` in `langgraph.json` points to the project root or `src`, and `main.py` prepends `src` to `sys.path`.
-- If the LLM returns non-JSON output, the code attempts to extract the first JSON object from the response; prompts explicitly request JSON-only to reduce parsing errors.
-- Ensure `TAVILY_API_KEY` is set and `tavily-python` package is installed. If the LangChain Tavily wrapper is unavailable, the code uses the Tavily client directly.
+### 3. Access the App
+
+After both services are running:
+- FastAPI backend: http://127.0.0.1:8000
+- Streamlit UI: Opens automatically in your browser
+
 
 ## Next steps (ideas)
 - Add unit tests for parsing and retrieval modules.
