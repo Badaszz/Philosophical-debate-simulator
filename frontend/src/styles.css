@@ -1,0 +1,244 @@
+:root {
+  --bg: #faf7f2;
+  --ink: #2a2438;
+  --muted: #6b6478;
+  --accent: #6c4ab6;
+  --accent-2: #b6455e;
+  --card: #ffffff;
+  --line: #e7e1d6;
+  --radius: 12px;
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+header h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.1rem;
+  margin: 0 0 0.25rem;
+}
+
+.tagline {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.controls input {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.controls button {
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.controls button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.controls button.danger {
+  background: var(--accent-2);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--muted);
+  margin: 0.5rem 0 1rem;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  background: #fdecec;
+  border: 1px solid #f5c6c6;
+  color: #8a1f1f;
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.dialogue {
+  margin: 0 0 1.25rem;
+}
+
+.dialogue summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.dialogue pre {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  white-space: pre-wrap;
+  max-height: 24rem;
+  overflow: auto;
+  font-size: 0.85rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+}
+
+.card h3 {
+  margin: 0 0 0.15rem;
+}
+
+.card .school {
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0.1rem 0 0.5rem;
+}
+
+.card .stance {
+  font-style: italic;
+  margin: 0 0 0.5rem;
+}
+
+.card .style {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+.card .claims {
+  margin: 0 0 0.75rem;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+}
+
+.card .goal {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.transcript h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 2px solid var(--line);
+  padding-top: 1.25rem;
+}
+
+.transcript .progress {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: inherit;
+}
+
+.turn {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 0.9rem 0;
+}
+
+.turn.reply {
+  border-left-color: var(--accent-2);
+}
+
+.turn-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.speaker {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.turn.reply .speaker {
+  color: var(--accent-2);
+}
+
+.round {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.question {
+  margin-top: 0.75rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17141d;
+    --ink: #ece7f3;
+    --muted: #a49bb4;
+    --card: #221d2c;
+    --line: #3a3347;
+  }
+}

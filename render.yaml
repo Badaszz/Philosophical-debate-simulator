@@ -1,0 +1,45 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# Deploys the FastAPI backend as a Python web service and the React app
+# as a static site. Create a new Blueprint from this file or run:
+#   render blueprint launch
+#
+# After first deploy, open each service's dashboard and set the secret env
+# vars (they are marked `sync: false` so blueprint values are NOT synced).
+
+services:
+  # ------------------------------- Backend (API) -------------------------------
+  - type: web
+    name: philosophical-debates-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install uv && uv sync --frozen --no-dev
+    startCommand: uv run uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /docs
+    envVars:
+      - key: TAVILY_API_KEY
+        sync: false
+        value: ""
+      - key: GROQ_API_KEY
+        sync: false
+        value: ""
+      # Comma-separated origins allowed to call the API from a browser,
+      # e.g. https://philosophical-debates-frontend.onrender.com,https://my-app.vercel.app
+      - key: CORS_ORIGINS
+        sync: false
+        value: ""
+
+  # ------------------------------- Frontend (SPA) ------------------------------
+  - type: web
+    name: philosophical-debates-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      # Absolute URL of the deployed backend, e.g. https://philosophical-debates-backend.onrender.com
+      - key: VITE_API_URL
+        sync: false
+        value: ""
+      - key: NODE_VERSION
+        value: 22

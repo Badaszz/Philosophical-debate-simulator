@@ -1,8 +1,7 @@
 [project]
 name = "philosophical-debates"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "LLM-powered philosophical debate simulator (backend service)"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.129.0",
@@ -15,7 +14,7 @@ dependencies = [
     "langsmith>=0.6.8",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
-    "streamlit>=1.54.0",
+    "requests>=2.31.0",
     "tavily-python>=0.7.21",
     "uvicorn>=0.40.0",
 ]

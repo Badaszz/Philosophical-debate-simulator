@@ -1,8 +1,8 @@
 {
-  "python_path": ".",
-  "dependencies": ["."],
+  "python_path": "backend",
+  "dependencies": ["backend"],
   "graphs": {
-    "agent": "main:app"
+    "agent": "philo_agent.app:app"
   },
   "env": ".env",
   "python_version": "3.13"
