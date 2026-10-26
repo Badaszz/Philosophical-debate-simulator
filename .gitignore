@@ -23,3 +23,7 @@ langgraph.lock
 frontend/node_modules/
 frontend/dist/
 npm-debug.log*
+
+# Evaluation outputs (generated)
+eval/results*.json
+eval/results*.md
