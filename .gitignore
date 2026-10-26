@@ -27,3 +27,5 @@ npm-debug.log*
 # Evaluation outputs (generated)
 eval/results*.json
 eval/results*.md
+
+setup.md

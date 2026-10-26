@@ -42,11 +42,6 @@ Philosophical_debates/
 - React 18 + Vite + TypeScript, dev server on `http://localhost:5173` with a proxy for `/debate` → `http://localhost:8000`.
 - Reads the SSE stream with `fetch` + `ReadableStream` (POST by design) and renders philosopher cards, live turns, progress, and a full-dialogue view.
 
-## Deploying
-The same codebase deploys natively to **Render** and **Vercel**, or as a container with **Docker Compose**. The frontend talks to the backend through a configurable `VITE_API_URL`, so the two services can live on different hosts.
-
-> For a complete, step-by-step walkthrough see **[`setup.md`](setup.md)**.
-
 ### Configuration recap
 | Env var | Where | Purpose |
 |---|---|---|
