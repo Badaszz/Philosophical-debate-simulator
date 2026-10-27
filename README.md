@@ -7,6 +7,7 @@ A lightweight framework for generating and running multi-turn philosophical deba
 - Retrieve relevant sources for each philosopher using Tavily, then enrich those sources with summaries from Wikipedia.
 - Run a multi-turn (default 5-turn) debate where each philosopher responds to the previous philosopher's question.
 - Stream every stage of the debate to the browser over Server-Sent Events (SSE), live as it happens.
+- Sign in with Google; Supabase enforces a per-user 10-minute debate cooldown, with admin-managed user exemptions.
 
 ## Architecture
 
@@ -35,26 +36,40 @@ Philosophical_debates/
 - FastAPI exposes two endpoints:
   - `POST /debate` — runs the full debate and returns `{"dialogue": ...}` (legacy, blocking).
   - `POST /debate/stream` — streams the debate as Server-Sent Events: `philosophers`, `status`, `turn`, `done`, `error`.
+- Supabase validates bearer tokens for debate requests and stores allowed users and cooldown usage.
+- Supabase also records per-user lifetime and UTC-daily accepted request counts without storing request topics or bodies. Non-exempt users may make five requests per UTC day; topics are limited to 100 `o200k_base` tokens.
+- Admins listed in Supabase's private `admin_users` table can manage the allowlist and restrict sign-in from the frontend.
+- Debate execution disables LangSmith tracing to avoid persisting prompts or transcripts through LangSmith.
 - Streaming is driven by LangGraph's async streaming (`graph.astream(..., stream_mode="updates")`), so each event is flushed to the client as soon as the underlying stage completes.
 - The pipeline lives in one place: `backend/philo_agent/graphs/main_graph.py`. `backend/philo_agent/app.py` re-exports the compiled graph for `langgraph dev`.
 
 ### Frontend
-- React 18 + Vite + TypeScript, dev server on `http://localhost:5173` with a proxy for `/debate` → `http://localhost:8000`.
+- React 18 + Vite + TypeScript, dev server on `http://localhost:5173` with proxies for `/debate`, `/auth`, and `/admin` → `http://localhost:8000`.
 - Reads the SSE stream with `fetch` + `ReadableStream` (POST by design) and renders philosopher cards, live turns, progress, and a full-dialogue view.
 
 ### Configuration recap
 | Env var | Where | Purpose |
 |---|---|---|
 | `GROQ_API_KEY`, `TAVILY_API_KEY` | backend | LLM + search (required) |
+| `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | backend | Token validation, user allowlist, and usage tracking |
 | `CORS_ORIGINS` | backend | Comma-separated origins allowed to call the API from a browser |
 | `VITE_API_URL` | frontend (build-time) | Absolute URL of the deployed backend |
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | frontend (build-time) | Supabase Google sign-in; the anon key is public |
+
+Google OAuth, the admin-managed sign-in allowlist, and per-user usage limits
+require the Supabase database setup in [`setup.md`](setup.md).
+The service-role key must only be configured on the backend, never in the
+frontend.
+
+The signed-in frontend footer credits **Made by Badasz** and links to
+https://badasz-portfolio.vercel.app.
 
 ### Render
 A [`render.yaml`](render.yaml) blueprint defines two services: the Python **backend** web service and a **static-site** frontend. From the repo root:
 ```bash
 render blueprint launch
 ```
-After creation, open each service's dashboard and set the `sync: false` secrets (`TAVILY_API_KEY`, `GROQ_API_KEY`, `CORS_ORIGINS`, `VITE_API_URL`).
+After creation, open each service's dashboard and set the `sync: false` secrets. See [`setup.md`](setup.md) for all backend/frontend Supabase and OAuth configuration.
 
 ### Vercel
 - **Frontend:** import `frontend/` as a Vercel project. `vercel.json` provides an SPA rewrite. Set the `VITE_API_URL` environment variable to your deployed backend URL before building.

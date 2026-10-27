@@ -37,13 +37,17 @@ DEBATE_PROMPT = ChatPromptTemplate.from_template("""
 You are {name}, a philosopher from the {school} tradition.
 
 Your task:
-- Respond directly to the previous philosopher's question or argument
+- If the previous philosopher asked a question, answer it explicitly and directly in the first part of your argument before introducing new points
+- Address the previous philosopher's argument and explain whether you agree or disagree
 - Defend your philosophical position
 - Challenge the opponent's reasoning
 - End with a probing philosophical question for them
 
-Opponent's last argument:
-{last_argument}
+Previous philosopher's argument:
+{previous_argument}
+
+Previous philosopher's question (answer this directly; do not ignore it):
+{previous_question}
 
 Your sources:
 {sources}
@@ -100,46 +104,51 @@ def debate_turn(state: PhilosophyAgentState) -> PhilosophyAgentState:
 
     turns = []
 
-    # Each philosopher responds in sequence to the previous one's question
     for p in philosophers:
-        # Determine what the previous philosopher said
-        if history:
-            last_turn = history[-1]
-            last_argument = (
+        preceding_turns = history + turns
+        if preceding_turns:
+            last_turn = preceding_turns[-1]
+            previous_argument = (
+                last_turn.argument
+                if hasattr(last_turn, "argument")
+                else last_turn.get("argument", "")
+            )
+            previous_question = (
                 last_turn.question
                 if hasattr(last_turn, "question")
                 else last_turn.get("question", "")
             )
         else:
-            last_argument = f"Begin the debate on {state.get('topic', 'the topic')}"
+            previous_argument = f"Begin the debate on {state.get('topic', 'the topic')}"
+            previous_question = "No question has been asked yet; open the debate by stating your position."
 
-        # Extract and format sources
         sources_list = p.get("sources", [])
         if isinstance(sources_list, dict) and "results" in sources_list:
             sources_list = sources_list["results"]
 
-        # Format sources for prompt
         if isinstance(sources_list, list):
             sources_text = "\n".join(
-                [f"- {s.get('title', s.get('query', 'Source'))}" for s in sources_list[:3]]
+                [
+                    f"- {s.get('title', s.get('query', 'Source'))}: {s.get('content', s.get('snippet', ''))}".strip(": ")
+                    for s in sources_list[:3]
+                ]
             )
         else:
             sources_text = str(sources_list)[:500]
 
-        # Generate response without tool-calling
         resp = llm.invoke(
             DEBATE_PROMPT.format(
                 name=p["philosopher"].name,
                 school=p["philosopher"].school,
-                last_argument=last_argument,
+                previous_argument=previous_argument,
+                previous_question=previous_question,
                 sources=sources_text,
             )
         )
         text = getattr(resp, "content", None) or str(resp)
 
-        # Parse JSON response
         try:
-            parsed = json.loads(text)
+            parsed = json.loads(text, strict=False)
         except Exception:
             match = re.search(r"\{.*\}", text, re.DOTALL)
             if not match:
@@ -149,12 +158,11 @@ def debate_turn(state: PhilosophyAgentState) -> PhilosophyAgentState:
                     "question": "What do you think?",
                 }
             else:
-                parsed = json.loads(match.group(0))
+                parsed = json.loads(match.group(0), strict=False)
 
         try:
             turn = DebateTurn.model_validate(parsed)
         except Exception:
-            # If validation fails, create a default turn
             turn = DebateTurn(
                 speaker=p["philosopher"].name,
                 argument=parsed.get("argument", text[:500]),

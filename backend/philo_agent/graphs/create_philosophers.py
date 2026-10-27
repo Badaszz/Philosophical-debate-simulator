@@ -61,13 +61,13 @@ def create_philosophers(state: InputState) -> PhilosophyAgentState:
     
     # Parse JSON from response
     try:
-        parsed = json.loads(text)
+        parsed = json.loads(text, strict=False)
     except Exception:
         # Try to extract JSON object from text
         match = re.search(r'\{.*\}', text, re.DOTALL)
         if not match:
             raise ValueError(f"Could not extract JSON from response: {text[:200]}")
-        parsed = json.loads(match.group(0))
+        parsed = json.loads(match.group(0), strict=False)
     
     # Validate and create PhilosopherSet
     philosopher_set = PhilosopherSet.parse_obj(parsed)

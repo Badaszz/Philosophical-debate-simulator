@@ -12,6 +12,15 @@ TAVILY_API_KEY=
 # GROQ / other LLM gateway key
 GROQ_API_KEY=
 
+# Supabase Auth and backend-only database access
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Frontend build-time Supabase settings (public anon key only)
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+
 # Optional: comma-separated browser origins allowed to call the API (CORS).
 # Defaults to local development origins when unset.
 # CORS_ORIGINS=http://localhost:5173,https://my-app.onrender.com
@@ -19,5 +28,4 @@ GROQ_API_KEY=
 # Optional endpoints (uncomment and set if needed)
 # LANGCHAIN_ENDPOINT=
 # LANGSMITH_ENDPOINT=
-
 

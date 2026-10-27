@@ -23,6 +23,15 @@ services:
       - key: GROQ_API_KEY
         sync: false
         value: ""
+      - key: SUPABASE_URL
+        sync: false
+        value: ""
+      - key: SUPABASE_ANON_KEY
+        sync: false
+        value: ""
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+        value: ""
       # Comma-separated origins allowed to call the API from a browser,
       # e.g. https://philosophical-debates-frontend.onrender.com,https://my-app.vercel.app
       - key: CORS_ORIGINS
@@ -39,6 +48,12 @@ services:
     envVars:
       # Absolute URL of the deployed backend, e.g. https://philosophical-debates-backend.onrender.com
       - key: VITE_API_URL
+        sync: false
+        value: ""
+      - key: VITE_SUPABASE_URL
+        sync: false
+        value: ""
+      - key: VITE_SUPABASE_ANON_KEY
         sync: false
         value: ""
       - key: NODE_VERSION

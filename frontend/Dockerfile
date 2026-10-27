@@ -7,6 +7,8 @@ COPY frontend/ ./
 # Backend URL baked into the bundle at build time. In docker-compose the
 # nginx /debate proxy handles routing, so VITE_API_URL can stay empty.
 ARG VITE_API_URL
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_ANON_KEY
 RUN npm run build
 
 # ---------- Static serve stage ----------

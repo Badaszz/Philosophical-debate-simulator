@@ -28,4 +28,5 @@ npm-debug.log*
 eval/results*.json
 eval/results*.md
 
-setup.md
+supabase/*
+!supabase/schema.sql
