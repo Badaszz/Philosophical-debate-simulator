@@ -47,6 +47,75 @@ Philosophical_debates/
 - React 18 + Vite + TypeScript, dev server on `http://localhost:5173` with proxies for `/debate`, `/auth`, and `/admin` → `http://localhost:8000`.
 - Reads the SSE stream with `fetch` + `ReadableStream` (POST by design) and renders philosopher cards, live turns, progress, and a full-dialogue view.
 
+### Evaluation
+
+The repo includes an LLM-judged evaluation harness at
+[`eval/evaluate_debates.py`](eval/evaluate_debates.py). It runs the debate agent
+on a set of topics and scores every turn on logical validity, hallucination
+control, adherence to the topic, adherence to the previous argument, coherence,
+and use of philosophical knowledge. It also reports debate-level quality/depth,
+strengths, weaknesses, and recommendations.
+
+```powershell
+# Five-topic smoke suite (uses the backend virtualenv)
+.\backend\.venv\Scripts\python.exe eval\evaluate_debates.py --quick
+
+# Custom topics with a README-ready markdown report
+.\backend\.venv\Scripts\python.exe eval\evaluate_debates.py `
+    --topics eval\topics.example.json `
+    --output eval\results.json `
+    --markdown eval\results.md
+```
+
+Scores and full transcripts are written to `eval/results.json`; `--markdown`
+produces a section that can be pasted into this README. Use `--from-results`
+to re-score saved dialogues without re-running the agent while tuning the judge.
+Use `--update-readme README.md` to write the generated report into the block
+below automatically (run it once results are acceptable).
+See [`eval/README.md`](eval/README.md) for all options and the iteration workflow.
+
+<!-- EVAL_RESULTS_START -->
+## Evaluation Results
+
+_Generated 2026-10-26 23:33 UTC with an LLM judge (`openai/gpt-oss-20b`)._
+
+### Aggregate scores
+
+| Metric | Score |
+|---|---|
+| Debates evaluated | 2 |
+| Turns scored | 20 |
+| Overall quality | 7.0/10 |
+| Philosophical depth | 7.5/10 |
+| Validity | 7.45/10 |
+| Hallucination control (10 = none) | 9.4/10 |
+| Adherence to topic | 10.0/10 |
+| Adherence to previous argument | 10.0/10 |
+| Coherence | 8.2/10 |
+| Use of philosophical knowledge | 8.55/10 |
+| Weakest dimension | Validity |
+
+### Per-topic
+
+| Topic | Quality | Depth | Turns |
+|---|---|---|---|
+| Is free will compatible with determinism? | 6.0/10 | 7.0/10 | 10 |
+| Does morality require religion? | 8.0/10 | 8.0/10 | 10 |
+
+### Notable strengths and weaknesses
+
+**Is free will compatible with determinism?**
+- Strengths: Accurate representation of Hume’s empiricist and compatibilist views.; Consistent adherence to the debate topic across all turns.; Clear, logical structure in most arguments.; No major factual inaccuracies or invented quotations.
+- Weaknesses: Turn 2 is incomplete, weakening its overall persuasiveness.; Several arguments are somewhat repetitive and could be more concise.; Occasional lack of concrete examples to illustrate abstract points.
+- Summary: The debate demonstrates a solid grasp of Hume’s empiricism and van Inwagen’s incompatibilism, with accurate attributions and coherent reasoning. The main shortcoming is the incomplete second turn, which disrupts the flow. Overall, the discussion remains on topic and showcases a respectable level of philosophical depth.
+
+**Does morality require religion?**
+- Strengths: Consistent engagement with the central question across all turns.; Accurate representation of Augustine’s and Kant’s core doctrines.; Logical structure and clear articulation of arguments.; Direct challenges to the opponent’s claims.
+- Weaknesses: Repetitive content, especially in Augustine’s later turns.; Occasional lack of nuance in addressing the opponent’s specific questions.; Limited exploration of empirical evidence or contemporary moral developments.
+- Summary: The debate demonstrates a solid grasp of Augustine’s and Kant’s positions, with clear, logically sound arguments. While Augustine’s repeated emphasis on divine illumination is coherent, it lacks novelty and could benefit from deeper engagement with Kant’s critiques. Kant’s responses are consistently rigorous and well‑grounded. Overall, the exchange is of high quality and philosophical depth, though it would be strengthened by greater diversity of content and more nuanced responses to the opponent’s questions.
+<!-- EVAL_RESULTS_END -->
+
+
 ### Configuration recap
 | Env var | Where | Purpose |
 |---|---|---|
@@ -134,79 +203,14 @@ docker compose up --build
 - Backend: http://localhost:8000
 - Frontend: http://localhost:8080 (nginx serves the SPA and proxies `/debate` to the backend)
 
-## Evaluation
-
-The repo includes an LLM-judged evaluation harness at
-[`eval/evaluate_debates.py`](eval/evaluate_debates.py). It runs the debate agent
-on a set of topics and scores every turn on logical validity, hallucination
-control, adherence to the topic, adherence to the previous argument, coherence,
-and use of philosophical knowledge. It also reports debate-level quality/depth,
-strengths, weaknesses, and recommendations.
-
-```powershell
-# Five-topic smoke suite (uses the backend virtualenv)
-.\backend\.venv\Scripts\python.exe eval\evaluate_debates.py --quick
-
-# Custom topics with a README-ready markdown report
-.\backend\.venv\Scripts\python.exe eval\evaluate_debates.py `
-    --topics eval\topics.example.json `
-    --output eval\results.json `
-    --markdown eval\results.md
-```
-
-Scores and full transcripts are written to `eval/results.json`; `--markdown`
-produces a section that can be pasted into this README. Use `--from-results`
-to re-score saved dialogues without re-running the agent while tuning the judge.
-Use `--update-readme README.md` to write the generated report into the block
-below automatically (run it once results are acceptable).
-See [`eval/README.md`](eval/README.md) for all options and the iteration workflow.
-
-<!-- EVAL_RESULTS_START -->
-## Evaluation Results
-
-_Generated 2026-10-26 23:33 UTC with an LLM judge (`openai/gpt-oss-20b`)._
-
-### Aggregate scores
-
-| Metric | Score |
-|---|---|
-| Debates evaluated | 2 |
-| Turns scored | 20 |
-| Overall quality | 7.0/10 |
-| Philosophical depth | 7.5/10 |
-| Validity | 7.45/10 |
-| Hallucination control (10 = none) | 9.4/10 |
-| Adherence to topic | 10.0/10 |
-| Adherence to previous argument | 10.0/10 |
-| Coherence | 8.2/10 |
-| Use of philosophical knowledge | 8.55/10 |
-| Weakest dimension | Validity |
-
-### Per-topic
-
-| Topic | Quality | Depth | Turns |
-|---|---|---|---|
-| Is free will compatible with determinism? | 6.0/10 | 7.0/10 | 10 |
-| Does morality require religion? | 8.0/10 | 8.0/10 | 10 |
-
-### Notable strengths and weaknesses
-
-**Is free will compatible with determinism?**
-- Strengths: Accurate representation of Hume’s empiricist and compatibilist views.; Consistent adherence to the debate topic across all turns.; Clear, logical structure in most arguments.; No major factual inaccuracies or invented quotations.
-- Weaknesses: Turn 2 is incomplete, weakening its overall persuasiveness.; Several arguments are somewhat repetitive and could be more concise.; Occasional lack of concrete examples to illustrate abstract points.
-- Summary: The debate demonstrates a solid grasp of Hume’s empiricism and van Inwagen’s incompatibilism, with accurate attributions and coherent reasoning. The main shortcoming is the incomplete second turn, which disrupts the flow. Overall, the discussion remains on topic and showcases a respectable level of philosophical depth.
-
-**Does morality require religion?**
-- Strengths: Consistent engagement with the central question across all turns.; Accurate representation of Augustine’s and Kant’s core doctrines.; Logical structure and clear articulation of arguments.; Direct challenges to the opponent’s claims.
-- Weaknesses: Repetitive content, especially in Augustine’s later turns.; Occasional lack of nuance in addressing the opponent’s specific questions.; Limited exploration of empirical evidence or contemporary moral developments.
-- Summary: The debate demonstrates a solid grasp of Augustine’s and Kant’s positions, with clear, logically sound arguments. While Augustine’s repeated emphasis on divine illumination is coherent, it lacks novelty and could benefit from deeper engagement with Kant’s critiques. Kant’s responses are consistently rigorous and well‑grounded. Overall, the exchange is of high quality and philosophical depth, though it would be strengthened by greater diversity of content and more nuanced responses to the opponent’s questions.
-<!-- EVAL_RESULTS_END -->
 
 ## Next steps (ideas)
 - Add unit tests for parsing and retrieval modules.
 - Add logging and retry/backoff on external calls (Tavily, Wikipedia, LLM).
 - Stream individual turns at the token level instead of per-node events.
 - Persist debates for later review.
+- enable user debate with philosophers
+- enable user to request further explanation on philosopher response
 
 ---
 *Note: `notebook.ipynb` and `example.txt`/`example.png` are scratch/demo artifacts kept at the repo root.*
